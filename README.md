@@ -28,3 +28,8 @@ poetry run python collect_roms.py ../gamelist.json \
     --exclude-system DREAMCAST \
     --dry-run
 ```
+
+# Console setup
+
+Refer to [Console Setup.MD](./console_setup.md) in order to prepare a console.
+
