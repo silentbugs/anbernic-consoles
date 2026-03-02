@@ -15,3 +15,16 @@ poetry run python collect_roms.py gamelist.json \
     --dest ~/tmp/roms/ \
     --dry-run
 ```
+
+```bash
+poetry run python collect_roms.py ../gamelist.json \
+    /Volumes/Public/Installers/Games/Emulators/ROMs \
+    /Volumes/Public/Installers/Games/Emulators/AnbernicSD \
+    --dest ~/tmp/roms/ \
+    --exclude-system PS2 \
+    --exclude-system PSP \
+    --exclude-system PSX \
+    --exclude-system GC \
+    --exclude-system DREAMCAST \
+    --dry-run
+```

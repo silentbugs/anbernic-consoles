@@ -59,11 +59,21 @@ def main():
         help="Destination directory where ROMs should be copied (folder structure preserved).",
     )
     parser.add_argument(
+        "--exclude-system",
+        action="append",
+        dest="exclude_systems",
+        default=[],
+        help="Exclude specific system directories (e.g. --exclude-system PS2). Can be used multiple times.",
+    )
+    parser.add_argument(
         "--dry-run",
         action="store_true",
         help="Show what would be copied without actually copying files.",
     )
     args = parser.parse_args()
+
+    # Normalize excluded system names (case-insensitive)
+    excluded = {s.lower() for s in args.exclude_systems}
 
     with open(args.json_file, "r") as f:
         data = json.load(f)
@@ -73,6 +83,14 @@ def main():
         f[2:] if f.startswith("./") else f.lstrip("./").lstrip("/") for f in rom_files
     ]
     rom_files = [f for f in rom_files if f]
+
+    # Filter excluded systems
+    if excluded:
+        rom_files = [
+            f
+            for f in rom_files
+            if not any(f.lower().startswith(ex + "/") for ex in excluded)
+        ]
 
     copied = []
     missing = []
@@ -91,9 +109,12 @@ def main():
         copied.append(rel_path)
 
     print("=== ROM Collection Report ===")
-    print(f"Total ROMs in JSON: {len(rom_files)}")
+    print(f"Total ROMs in JSON (after exclusions): {len(rom_files)}")
     print(f"Copied: {len(copied)}")
     print(f"Missing: {len(missing)}")
+
+    if excluded:
+        print(f"Excluded systems: {', '.join(sorted(excluded))}")
 
     if missing:
         print("\n❌ Missing files:")
