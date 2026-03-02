@@ -1,0 +1,33 @@
+#!/bin/bash
+help() {
+	echo "usage: ops[format|dev]"
+	echo "  format: format once to format code"
+	echo "  dev: dev python files for changes and apply formatting"
+}
+
+if [ "$#" -ne 1 ]; then
+	help
+	exit 1
+fi
+
+# format code
+format() {
+	poetry run isort .
+	poetry run black .
+	poetry run flake8 .
+}
+
+# parse input arguments
+case $1 in
+	format)
+		format
+		;;
+	dev)
+		format
+		poetry run watchmedo shell-command -p "*.py" -R -W -c './ops format' .
+		;;
+	*)
+		help
+		exit 1
+		;;
+esac
