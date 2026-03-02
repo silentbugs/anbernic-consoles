@@ -29,7 +29,16 @@ poetry run python collect_roms.py ../gamelist.json \
     --dry-run
 ```
 
+## 3. Compare files
+
+```bash
+diff -rq ~/Downloads/media/games/ROMs/ ~/tmp/roms/
+```
+
+```
+cd /Users/silentz0r/Downloads/media/games/scripts
+```
+
 # Console setup
 
 Refer to [Console Setup.MD](./console_setup.md) in order to prepare a console.
-
